@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-service-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: query-service
+  template:
+    metadata:
+      labels:
+        app: query-service
+    spec:
+      containers:
+        - name: query-service
+          image: query-service
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-service-depl-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: query-service
+  ports:
+    - name: query-service
+      protocol: TCP
+      port: 4003
+      targetPort: 4003

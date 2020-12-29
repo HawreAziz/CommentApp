@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderate-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: moderate
+  template:
+    metadata:
+      labels:
+        app: moderate
+    spec:
+      containers:
+        - name: moderate
+          image: moderate
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderate-depl-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: moderate
+  ports:
+    - name: moderate
+      protocol: TCP
+      port: 4005
+      targetPort: 4005
